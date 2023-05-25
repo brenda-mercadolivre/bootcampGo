@@ -29,7 +29,7 @@ func main() {
 	//Exerc 4
 
 	var sobrenome2 string = "Silva"
-	var idade2 int = 25
+	var idade2 int = 32
 	var filhos = false
 	var salario float32 = 4585.90
 	var nome2 string = "Fellipe"
