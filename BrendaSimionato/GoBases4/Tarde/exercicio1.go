@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func main() {
+func exerc1() {
 
 	fmt.Println("Iniciando...")
 

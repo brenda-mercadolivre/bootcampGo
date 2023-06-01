@@ -24,7 +24,7 @@ func geraErro() {
 	}
 }
 
-func main() {
+func ex() {
 
 	defer geraErro()
 

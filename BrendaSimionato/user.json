@@ -1,0 +1,10 @@
+{
+    "Id": 1, 
+	"Nome": "Brenda Evellyn",        
+	"Sobrenome": "Tiba Simionato",   
+	"Email": "brenda.simionato@mercadolivre.com",       
+	"Idade": 25,       
+	"Altura": 1.58,     
+	"Ativo": true,     
+	"DataCriacao": "01/06/2023"
+}

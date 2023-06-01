@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func salarioErroCustomizado(salario float64) {
+func SalarioErrCustomizado(salario float64) {
 	if salario < 15.000 {
 		fmt.Println(errors.New("O salário digitado não está dentro do valor mínimo."), salario)
 		return
@@ -15,6 +15,6 @@ func salarioErroCustomizado(salario float64) {
 	}
 }
 
-func main() {
-	salarioErroCustomizado(1.700)
+func exerc2() {
+	SalarioErrCustomizado(1.700)
 }

@@ -9,7 +9,7 @@ import (
 	"text/tabwriter"
 )
 
-func main() {
+func exerc2() {
 	arquivo, err := os.Open("produtosGerados.csv")
 	if err != nil {
 		log.Println(err)

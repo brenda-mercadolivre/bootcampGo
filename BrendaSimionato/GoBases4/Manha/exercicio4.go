@@ -55,7 +55,7 @@ func validaHoras(horasTrabalhadas int) (int, error) {
 	}
 }
 
-func main() {
+func exerc4() {
 	salario, erro := calcSalario(100, 120)
 
 	if erro != nil {

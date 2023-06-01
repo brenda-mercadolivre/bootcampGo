@@ -34,7 +34,7 @@ func geradorCsv(caminho string, produtos []produto) error {
 
 	return nil
 }
-func main() {
+func exerc1() {
 	produtos := []produto{
 		{
 			id:         12,

@@ -23,6 +23,6 @@ func salarioErroCustomizado(salario float64, status int) {
 	}
 }
 
-func main() {
+func exerc3() {
 	salarioErroCustomizado(2.000, http.StatusBadRequest)
 }

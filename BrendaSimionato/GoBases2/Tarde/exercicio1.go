@@ -18,7 +18,7 @@ func (a aluno) detalhar() {
 	fmt.Println("RG:", a.RG)
 	fmt.Println("DataAdmissao:", a.DataAdmissao)
 }
-func main() {
+func exerc1() {
 	a1 := aluno{
 		Nome:         "João",
 		Sobrenome:    "da Silva",

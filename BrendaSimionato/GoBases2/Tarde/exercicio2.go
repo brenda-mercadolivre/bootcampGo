@@ -58,7 +58,7 @@ func novoLoja() Ecommerce {
 	return &Loja{}
 }
 
-func main() {
+func exerc2() {
 	loja := novoLoja()
 
 	produto1 := novoProduto("pequeno", "pão de queijo", 4.00)
