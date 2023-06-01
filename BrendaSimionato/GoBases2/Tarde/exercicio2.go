@@ -1,69 +1,75 @@
 package main
 
-type produto struct {
-	tipo  string
-	nome  string
-	preço float64
+import "fmt"
+
+type Product struct {
+	TipoProduto string
+	Nome        string
+	Preco       float64
 }
 
-func (p produto) produto() float64 {
-	return p.preço
+func (p *Product) CalcularCusto() float64 {
+	switch p.TipoProduto {
+	case "médio":
+		return p.Preco * 1.03
+	case "grande":
+		return p.Preco*1.06 + 2500
+	default:
+		return p.Preco
+	}
 }
 
-func (p produto) medio() float64 {
-	return p.preço * 0.3
+type Ecommerce interface {
+	Total() float64
+	Adicionar(novoProduto IProduto)
 }
 
-func (p produto) grande() float64 {
-	return (p.preço * 0.6) + 2.500
+type IProduto interface {
+	CalcularCusto() float64
 }
 
-type Produto interface {
-	calcCusto() float64
+type Loja struct {
+	Produtos []IProduto
 }
 
-func novoProduto(tipo string, nome string, preço float64) produto {
-	return produto{preço: preço, tipo: tipo, nome: nome}
+func (loja *Loja) Adicionar(novoProduto IProduto) {
+	loja.Produtos = append(loja.Produtos, novoProduto)
 }
 
-const (
-	tipoPequeno = "pequeno"
-	tipoMedio   = "medio"
-	tipoGrande  = "grande"
-)
+func (loja *Loja) Total() float64 {
+	total := 0.0
 
-// func novosProdutos(tipoProduto string, valor ...float64) Produto {
-// 	switch tipoProduto {
-// 	case tipoPequeno:
-// 		return pequeno{preço: valor[0]}
+	for _, produto := range loja.Produtos {
+		total += produto.CalcularCusto()
+	}
 
-// 	case tipoMedio:
-// 		return medio{preço: valor[0]}
+	return total
+}
 
-// 	case tipoGrande:
-// 		return grande{preço: valor[0]}
-// 	}
-// 	return nil
-// }
+func novoProduto(tipoProduto, nome string, preco float64) IProduto {
+	return &Product{
+		TipoProduto: tipoProduto,
+		Nome:        nome,
+		Preco:       preco,
+	}
+}
 
-// func main() {
+func novoLoja() Ecommerce {
+	return &Loja{}
+}
 
-// 	p := novoProduto(tipoPequeno, "pequeno", 10)
-// 	fmt.Println("Tipo Pequeno")
-// 	fmt.Printf("Nome: %.2f\n", p.nome)
-// 	fmt.Printf("\tPreço: %.2f\n\t", p.calcCusto())
+func main() {
+	loja := novoLoja()
 
-// 	fmt.Println()
+	produto1 := novoProduto("pequeno", "pão de queijo", 4.00)
+	produto2 := novoProduto("médio", "bolo de cenoura", 25.00)
+	produto3 := novoProduto("grande", "bolo de casamento", 1000.00)
 
-// 	m := novoProduto(tipoMedio, "medio", 20)
-// 	fmt.Println("Tipo Médio")
-// 	fmt.Printf("Nome: %.2f\n", m.nome)
-// 	fmt.Printf("\tPreço: %.2f\n\t", m.calcCusto())
+	loja.Adicionar(produto1)
+	loja.Adicionar(produto2)
+	loja.Adicionar(produto3)
 
-// 	fmt.Println()
+	total := loja.Total()
 
-// 	g := novoProduto(tipoGrande, "grande", 30)
-// 	fmt.Println("Tipo Grande")
-// 	fmt.Printf("Nome: %.2f\n", g.nome)
-// 	fmt.Printf("\tPreço: %.2f\n\t", g.calcCusto())
-// }
+	fmt.Println("Preço total: ", total)
+}
