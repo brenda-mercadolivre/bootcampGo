@@ -22,17 +22,24 @@ var lastId int
 
 func saveUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
 		var req user
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"Error": err.Error(),
+			})
+		}
+		token := c.GetHeader("token")
+		if token != "12345" {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"Error": "Token inválido",
 			})
 			return
 		}
 		lastId++
 		req.Id = lastId
 		users = append(users, req)
-		c.JSON(http.StatusCreated, req)
+		c.JSON(http.StatusCreated, token)
 	}
 }
 
