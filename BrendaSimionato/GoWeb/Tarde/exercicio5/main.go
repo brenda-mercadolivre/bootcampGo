@@ -2,11 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
+
+var USERS_FILE = "GoWeb/users.json"
 
 type user struct {
 	Id           int
@@ -32,23 +34,27 @@ func UsersFromJSON(file string) (users []user, err error) {
 	return
 }
 
-func main() {
+func GetById(ctxt *gin.Context) {
+	users, err := UsersFromJSON(USERS_FILE)
+	if err != nil {
+		ctxt.Status(500)
+		return
+	}
 
-	router := gin.Default()
-	router.GET("/name", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"Message": "Hello, Brenda.",
-		})
-	})
-
-	router.GET("/users", func(c *gin.Context) {
-		users, err := UsersFromJSON("GoWeb/users.json")
-		if err != nil {
-			c.Status(500)
+	u := ctxt.Param("id")
+	uToInt, err := strconv.Atoi(u)
+	for _, user := range users {
+		if user.Id == uToInt {
+			ctxt.JSON(200, user)
 			return
 		}
-		c.JSON(200, gin.H{"data": users})
-	})
+	}
+	ctxt.Status(404)
+}
+
+func main() {
+	router := gin.Default()
+	router.GET("/user/:id", GetById)
 
 	router.Run()
 }
