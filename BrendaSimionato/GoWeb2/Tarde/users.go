@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -32,7 +33,7 @@ func NewUser(u Service) *Users {
 func (c *Users) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{
 				"Error": "Token inválido",
 			})
@@ -53,7 +54,7 @@ func (c *Users) GetAll() gin.HandlerFunc {
 func (c *Users) Create() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"Error": "Token inválido"})
 			return
 		}
@@ -77,7 +78,7 @@ func (c *Users) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		token := ctx.GetHeader("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"Error": "token inválido"})
 			return
 		}
@@ -136,7 +137,7 @@ func (c *Users) Update() gin.HandlerFunc {
 func (c *Users) UpdateSurnameAndAge() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"Error": "token inválido"})
 			return
 		}
@@ -173,7 +174,7 @@ func (c *Users) UpdateSurnameAndAge() gin.HandlerFunc {
 func (c *Users) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"Error": "token inválido"})
 			return
 		}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,7 +31,7 @@ func saveUser() gin.HandlerFunc {
 			})
 		}
 		token := c.GetHeader("token")
-		if token != "12345" {
+		if token != os.Getenv("TOKEN") {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"Error": "Token inválido",
 			})
