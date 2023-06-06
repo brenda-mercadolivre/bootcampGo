@@ -1,0 +1,32 @@
+[
+	{
+		"Id":           "1",
+		"Name":         "Brenda Evellyn",
+		"Surname":      "Tiba Simionato",
+		"Email":        "brenda.simionato@mercadolivre.com",
+		"Age":          25,
+		"Height":       1.58,
+		"Active":        true,
+		"CreationDate": "01/06/2023"
+	},
+	{
+		"Id":           "2",
+		"Name":         "Chico",
+		"Surname":      "Simionato",
+		"Email":        "chico@mercadolivre.com",
+		"Age":          2,
+		"Height":       0.42,
+		"Active":        true,
+		"CreationDate": "01/06/2023"
+	},
+	{
+		"Id":           "3",
+		"Name":         "Luiz",
+		"Surname":      "Rodrigues",
+		"Email":        "luiz@mercadolivre.com",
+		"Age":          32,
+		"Height":       1.80,
+		"Active":        true,
+		"CreationDate": "01/06/2023"
+	}
+]
