@@ -1,4 +1,4 @@
-package main
+package users
 
 type Service interface {
 	GetAll() ([]User, error)

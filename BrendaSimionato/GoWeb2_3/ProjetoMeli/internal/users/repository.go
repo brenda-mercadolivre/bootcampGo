@@ -1,9 +1,9 @@
-package main
+package users
 
 import (
 	"fmt"
 
-	"github.com/brenda-mercadolivre/bootcampGo/GoWeb2/Tarde/pkg/store"
+	"github.com/brenda-mercadolivre/bootcampGo/GoWeb2_3/ProjetoMeli/pkg/store"
 )
 
 type User struct {
