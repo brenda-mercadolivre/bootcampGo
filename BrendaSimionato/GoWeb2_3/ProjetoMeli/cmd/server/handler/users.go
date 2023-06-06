@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/brenda-mercadolivre/bootcampGo/GoWeb2_3/ProjetoMeli/internal/users"
+	"github.com/brenda-mercadolivre/bootcampGo/GoWeb2_3/ProjetoMeli/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -35,9 +36,7 @@ func (c *Users) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
 		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"Error": "Token inválido",
-			})
+			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token inválido"))
 			return
 		}
 
@@ -48,7 +47,7 @@ func (c *Users) GetAll() gin.HandlerFunc {
 			})
 			return
 		}
-		ctx.JSON(http.StatusOK, u)
+		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, u, ""))
 	}
 }
 
@@ -56,7 +55,7 @@ func (c *Users) Create() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
 		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"Error": "Token inválido"})
+			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token inválido"))
 			return
 		}
 		var req request
@@ -80,7 +79,7 @@ func (c *Users) Update() gin.HandlerFunc {
 
 		token := ctx.GetHeader("token")
 		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"Error": "token inválido"})
+			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token inválido"))
 			return
 		}
 
@@ -96,42 +95,48 @@ func (c *Users) Update() gin.HandlerFunc {
 			return
 		}
 
-		if req.Name == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "O nome do usuário é obrigatório"})
+		if req.Name == "" || req.Surname == "" || req.Email == "" || req.Age == 0 || req.Height == 0 || req.Active == false ||
+			req.CreationDate == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "Todas as informações do usuário devem ser preenchidas."})
 			return
 		}
 
-		if req.Surname == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "O sobrenome do usuário é obrigatório"})
-			return
-		}
-		if req.Email == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "O email do usuário é obrigatório"})
-			return
-		}
-		if req.Age == 0 {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "A idade do usuário é obrigatória"})
-			return
-		}
-		if req.Height == 0 {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "A altura do usuário é obrigatória"})
-			return
-		}
-		if req.Active == false {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "O campo é ativo, do usuário é obrigatório"})
-			return
-		}
-		if req.CreationDate == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "A data de criação do usuário é obrigatória"})
-			return
-		}
+		// if req.Name == "" {
+		// 	ctx.JSON(http.StatusBadRequest, gin.H{"Error": "O nome do usuário é obrigatório"})
+		// 	return
+		// }
+
+		// if req.Surname == "" {
+		// 	ctx.JSON(http.StatusBadRequest, gin.H{"Error": "O sobrenome do usuário é obrigatório"})
+		// 	return
+		// }
+		// if req.Email == "" {
+		// 	ctx.JSON(http.StatusBadRequest, gin.H{"Error": "O email do usuário é obrigatório"})
+		// 	return
+		// }
+		// if req.Age == 0 {
+		// 	ctx.JSON(http.StatusBadRequest, gin.H{"Error": "A idade do usuário é obrigatória"})
+		// 	return
+		// }
+		// if req.Height == 0 {
+		// 	ctx.JSON(http.StatusBadRequest, gin.H{"Error": "A altura do usuário é obrigatória"})
+		// 	return
+		// }
+		// if req.Active == false {
+		// 	ctx.JSON(http.StatusBadRequest, gin.H{"Error": "O campo é ativo, do usuário é obrigatório"})
+		// 	return
+		// }
+		// if req.CreationDate == "" {
+		// 	ctx.JSON(http.StatusBadRequest, gin.H{"Error": "A data de criação do usuário é obrigatória"})
+		// 	return
+		// }
 
 		u, err := c.service.Update(int(Id), req.Name, req.Surname, req.Email, req.Age, req.Height, req.Active, req.CreationDate)
 		if err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"Error": err.Error()})
 			return
 		}
-		ctx.JSON(http.StatusOK, u)
+		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, u, ""))
 	}
 }
 
@@ -139,7 +144,7 @@ func (c *Users) UpdateSurnameAndAge() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
 		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"Error": "token inválido"})
+			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token inválido"))
 			return
 		}
 
@@ -168,7 +173,7 @@ func (c *Users) UpdateSurnameAndAge() gin.HandlerFunc {
 			ctx.JSON(http.StatusNotFound, gin.H{"Error": err.Error()})
 			return
 		}
-		ctx.JSON(http.StatusOK, u)
+		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, u, ""))
 	}
 }
 
@@ -176,7 +181,7 @@ func (c *Users) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
 		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"Error": "token inválido"})
+			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token inválido"))
 			return
 		}
 
@@ -191,7 +196,6 @@ func (c *Users) Delete() gin.HandlerFunc {
 			ctx.JSON(http.StatusNotFound, gin.H{"Error": err.Error()})
 			return
 		}
-
 		ctx.JSON(http.StatusOK, gin.H{"Data": fmt.Sprintf("O usuário %d foi removido", id)})
 	}
 }

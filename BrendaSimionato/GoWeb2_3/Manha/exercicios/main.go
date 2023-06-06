@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/brenda-mercadolivre/bootcampGo/GoWeb2_3/ProjetoMeli/pkg/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,9 +33,7 @@ func saveUser() gin.HandlerFunc {
 		}
 		token := c.GetHeader("token")
 		if token != os.Getenv("TOKEN") {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"Error": "Token inválido",
-			})
+			c.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token inválido"))
 			return
 		}
 		lastId++
@@ -63,7 +62,7 @@ func main() {
 			return
 		}
 		req.Id = 1
-		ctx.JSON(http.StatusOK, req)
+		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, req, ""))
 	})
 	router.GET("/users", getUsers)
 	u := router.Group("/users")
